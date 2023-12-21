@@ -1,6 +1,31 @@
+import { useState, useEffect } from "react";
+
 function ProductForm() {
+  const [name, setname] = useState("");
+  const [image, setimage] = useState("");
+  const [price, setprice] = useState();
+  const [description, setdescription] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (submitted) {
+      const formData = {
+        name,
+        price: parseInt(price),
+        image,
+        description,
+      };
+      alert(JSON.stringify(formData, null, 2));
+      setSubmitted(false); // reset เพื่อไม่ให้ alert ซ้ำ
+    }
+  }, [submitted, name, price, image, description]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSubmitted(true);
+  };
   return (
-    <form className="post-form">
+    <form className="post-form" onSubmit={handleSubmit}>
       <h1>Create Product Form</h1>
       <div className="input-container">
         <label>
@@ -10,7 +35,11 @@ function ProductForm() {
             name="name"
             type="text"
             placeholder="Enter name here"
-            onChange={() => {}}
+            value={name}
+            onChange={(event) => {
+              setname(event.target.value);
+            }}
+            required
           />
         </label>
       </div>
@@ -22,7 +51,11 @@ function ProductForm() {
             name="image"
             type="text"
             placeholder="Enter image url here"
-            onChange={() => {}}
+            value={image}
+            onChange={(event) => {
+              setimage(event.target.value);
+            }}
+            required
           />
         </label>
       </div>
@@ -34,7 +67,11 @@ function ProductForm() {
             name="price"
             type="number"
             placeholder="Enter price here"
-            onChange={() => {}}
+            value={price}
+            onChange={(event) => {
+              setprice(event.target.value);
+            }}
+            required
           />
         </label>
       </div>
@@ -46,7 +83,11 @@ function ProductForm() {
             name="description"
             type="text"
             placeholder="Enter description here"
-            onChange={() => {}}
+            value={description}
+            onChange={(event) => {
+              setdescription(event.target.value);
+            }}
+            required
             rows={4}
             cols={30}
           />
